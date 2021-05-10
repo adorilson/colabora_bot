@@ -174,18 +174,18 @@ def filtra_inativos(sites):
     Percorrendo a lista de sites para verificar
     a sua disponibilidade. Caso o código de status
     seja 200 (OK), então ela está disponível para acesso.
-    Se não estiver disponível pra acessar, retorna o site.
+    Se não estiver disponível pra acessar, retorna uma tupla nomeada
+    com url, orgao e resposta.
     """
     
     last_exception = None
-    
     for row in sites:
         url, orgao = row.url, row.orgao
         for tentativa in range(TOTAL_TENTATIVAS):
             try:
                 resposta = requests.get(url,
                                         headers=headers,
-                                        timeout=60,
+                                        timeout=10,
                                         verify=not(last_exception == "SSLError"))
                 status_code = resposta.status_code
                 # TODO ver esse print
